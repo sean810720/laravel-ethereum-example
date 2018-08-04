@@ -45,7 +45,7 @@ truffle migrate --reset<br /><br />
 
 ## 5. 修改 EthExampleController.php
 
-- 調整 app/Http/Controllers/EthExampleController.php 中的「呼叫者錢包位址」與「被呼叫的合約或錢包位址」
+- 調整 app/Http/Controllers/EthExampleController.php 中的「呼叫者錢包位址」與「被呼叫的合約或錢包位址」<br /><br />
 
 
 ## 6. 測試看看第一筆交易
