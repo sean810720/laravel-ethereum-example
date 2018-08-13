@@ -108,7 +108,7 @@ class EthereumRepository extends Ethereum
                 '0x' . dechex($value),
 
                 // Gas - 發起人願意為交易出的瓦斯量
-                self::eth_estimateGas($message, 'latest'),
+                '0x' . dechex(hexdec(self::eth_estimateGas($message, 'latest')) * 10),
 
                 // Gas Price - 鏈上的瓦斯單價
                 self::eth_gasPrice(),
@@ -146,15 +146,26 @@ class EthereumRepository extends Ethereum
             } else {
 
                 // 只回傳 Transaction Receipt
-                $result = json_decode(json_encode($tx_receipt));
+                $result = json_decode(json_encode($tx_receipt), 1);
 
-                // 將數字欄位轉成 10 進位
-                $result['nonce']            = base_convert($result['nonce'], 16, 10);
-                $result['blockNumber']      = base_convert($result['blockNumber'], 16, 10);
-                $result['gas']              = base_convert($result['gas'], 16, 10);
-                $result['gasPrice']         = base_convert($result['gasPrice'], 16, 10);
-                $result['value']            = base_convert($result['value'], 16, 10);
-                $result['transactionIndex'] = base_convert($result['transactionIndex'], 16, 10);
+                if ($result['status'] == '0x1') {
+
+                    // 將數字欄位轉成 10 進位
+                    $result['nonce']            = base_convert($result['nonce'], 16, 10);
+                    $result['blockNumber']      = base_convert($result['blockNumber'], 16, 10);
+                    $result['gas']              = base_convert($result['gas'], 16, 10);
+                    $result['gasPrice']         = base_convert($result['gasPrice'], 16, 10);
+                    $result['value']            = base_convert($result['value'], 16, 10);
+                    $result['transactionIndex'] = base_convert($result['transactionIndex'], 16, 10);
+
+                } else {
+
+                    // 將數字欄位轉成 10 進位
+                    $result['transactionIndex']  = base_convert($result['transactionIndex'], 16, 10);
+                    $result['blockNumber']       = base_convert($result['blockNumber'], 16, 10);
+                    $result['gasUsed']           = base_convert($result['gasUsed'], 16, 10);
+                    $result['cumulativeGasUsed'] = base_convert($result['cumulativeGasUsed'], 16, 10);
+                }
             }
 
             return $result;
